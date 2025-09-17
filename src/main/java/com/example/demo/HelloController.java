@@ -15,7 +15,7 @@ class HelloRestController {
     public String hello() {
         return "Hello, Spring Java!";
     }
-}
+} 
 
 @Controller
 class PageController {
