@@ -1,8 +1,20 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*; // JPA annotations
+import java.util.Objects;
+
+@Entity // Marks this class as a JPA entity
+@Table(name = "users") // Optional: specify table name
 public class User {
+
+    @Id // Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generated ID
     private Long id;
+
+    @Column(nullable = false, unique = true) // Must be unique and not null
     private String username;
+
+    @Column(nullable = false) // Not null
     private String passwordHash;
 
     public User() {}
@@ -12,29 +24,39 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    private Long getId() {
+    public Long getId() {
         return id;
     }
 
-    private void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    private String getPasswordHash() {
+    public String getPasswordHash() {
         return passwordHash;
     }
 
-    private void setPasswordHash(String passwordHash) {
+    public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(!(o instanceof User user)) return false;
+        return Objects.equals(id, user.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
