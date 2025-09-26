@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.model.Note;
+import com.example.demo.repository.NoteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
