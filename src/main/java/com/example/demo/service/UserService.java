@@ -19,4 +19,5 @@ public class UserService {
     public Optional<User> findById(Long id) { return repo.findById(id); }
     public User save(User u) { return repo.save(u); }
     public User findByUsername(String username) { return repo.findByUsername(username); }
+    public void deleteByid(Long id) { repo.deleteById(id);}
 }
