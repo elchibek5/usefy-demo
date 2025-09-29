@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping
     public List<User> all() { return service.findAll(); }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> one(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
