@@ -9,23 +9,28 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService service;
-    public UserController(UserService service) { this.service = service; }
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public List<User> all() { return service.findAll(); }
+    public List<User> getAllUsers() {
+        return service.findAll();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> one(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         User saved = service.save(user);
         return ResponseEntity
                 .created(URI.create("/api/users/" + saved.getId()))
@@ -33,8 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id,
-                                       @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return service.findById(id)
                 .map(existing -> {
                     existing.setUsername(user.getUsername());
@@ -45,11 +49,11 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (service.findById(id).isEmpty())
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if (service.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
+        }
         service.deleteById(id);
         return ResponseEntity.noContent().build();
-
     }
 }
