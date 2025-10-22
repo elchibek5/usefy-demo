@@ -6,18 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 @RestController
-class HelloRestController {
+public class HelloController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello, Spring Java!";
     }
-} 
-
-@Controller
-class PageController {
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("msg", "Spring + Thymeleaf is working!");
-        return "index"; // templates/index.html
-    }
 }
+
