@@ -21,7 +21,7 @@ public class AuthController {
         return ResponseEntity.ok(service.registerUser(dto));
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginDto dto) {
         boolean success = service.loginUser(dto);
         if (success) {
