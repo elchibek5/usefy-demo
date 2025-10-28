@@ -8,7 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class    AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService {
+
     private final UserRepository repo;
     private final PasswordEncoder encoder;
 
@@ -25,7 +26,7 @@ public class    AuthServiceImpl implements AuthService {
 
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPasswordHash(encoder.encode(dto.getPassword()));
+        user.setPasswordHash(encoder.encode(dto.getPassword())); // encode the password
         return repo.save(user);
     }
 
