@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.model.User;
 import com.example.demo.service.AuthService;
@@ -14,9 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
@@ -33,7 +34,6 @@ class AuthControllerTest {
     @Test
     void testRegister_Success() throws Exception {
         // Arrange
-
         UserRegistrationDto dto = new UserRegistrationDto("testUser", "password");
         User savedUser = new User();
         savedUser.setUsername("testUser");
@@ -51,5 +51,20 @@ class AuthControllerTest {
         verify(authService).registerUser(any(UserRegistrationDto.class));
     }
 
+    @Test
+    void testLogin_Success() throws Exception {
+        // Arrange
+        UserLoginDto dto = new UserLoginDto("testUser", "password");
+        when(authService.loginUser(any(UserLoginDto.class))).thenReturn(true);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/auth/login")
+                .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("login successful!"));
+
+        verify(authService).loginUser(any(UserLoginDto.class));
+    }
 
 }
