@@ -93,5 +93,31 @@ class AuthServiceImplTest {
         verify(userRepository).findByUsername("nonexistent");
         verify(passwordEncoder, never()).matches(anyString(), anyString());
     }
+
+    @Test
+    void testRegisterUser_Success() {
+        // Arrange
+        UserRegistrationDto dto = new UserRegistrationDto("newUser", "plainPassword");
+
+        when(userRepository.findByUsername("newUser")).thenReturn(null);
+        when(passwordEncoder.encode("plainPassword")).thenReturn("encodedPassword");
+
+        User savedUser = new User();
+        savedUser.setUsername("newUser");
+        savedUser.setPasswordHash("encodedPassword");
+
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        // Act
+        User result = authService.registerUser(dto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("newUser", result.getUsername());
+        assertEquals("encodedPassword", result.getPasswordHash());
+
+        verify(passwordEncoder).encode("plainPassword");
+        verify(userRepository).save(any(User.class));
+    }
 }
 
