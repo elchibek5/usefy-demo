@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User registerUser(UserRegistrationDto dto) {
         if (repo.findByUsername(dto.getUsername()) != null) {
-            throw new RuntimeException("Username already exists!");
+            throw new RuntimeException("Username already exists");
         }
 
         User user = new User();
