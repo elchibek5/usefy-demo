@@ -7,3 +7,4 @@ Use:
 ./mvnw spring-boot:run
 
 Then open **http://localhost:8080** in your browser.
+![Build Status](https://github.com/elchibek5/usefy-demo)
