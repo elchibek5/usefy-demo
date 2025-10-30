@@ -119,5 +119,29 @@ class AuthServiceImplTest {
         verify(passwordEncoder).encode("plainPassword");
         verify(userRepository).save(any(User.class));
     }
+
+    @Test
+    void testRegisterUser_Failure_UsernameAlreadyExists() {
+        // Arrange
+        UserRegistrationDto dto = new UserRegistrationDto("existingUser", "password");
+
+        // Mock that the username already exists
+        User existingUser = new User();
+        existingUser.setUsername("existingUser");
+        when(userRepository.findByUsername("existingUser")).thenReturn(existingUser);
+
+        // Act & Assert
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> authService.registerUser(dto)
+        );
+
+        // Verify the exception message
+        assertEquals("Username already exists", exception.getMessage());
+
+        // Verifying that password encoding and saving NEVER happened
+        verify(passwordEncoder, never()).encode(anyString());
+        verify(userRepository, never()).save(any(User.class));
+    }
 }
 
