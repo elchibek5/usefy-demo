@@ -6,16 +6,15 @@ import com.example.demo.model.User;
 import com.example.demo.service.AuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;  // allows sending HTTP requests
+    private MockMvc mockMvc;
 
     @MockBean
-    private AuthService authService; // mock the service (we don't hit the DB)
+    private AuthService authService;
 
     @Autowired
-    private ObjectMapper objectMapper; // converts Java objects <-> JSON
+    private ObjectMapper objectMapper;
 
     @Test
     void testRegister_Success() throws Exception {
@@ -42,9 +41,9 @@ class AuthControllerTest {
         when(authService.registerUser(any(UserRegistrationDto.class))).thenReturn(savedUser);
 
         // Act & Assert
-        mockMvc.perform(post("/api/auth/register"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto))
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("testUser"));
 
@@ -58,13 +57,28 @@ class AuthControllerTest {
         when(authService.loginUser(any(UserLoginDto.class))).thenReturn(true);
 
         // Act & Assert
-        mockMvc.perform(get("/api/auth/login")
-                .contentType(String.valueOf(MediaType.APPLICATION_JSON))
-                .content(objectMapper.writeValueAsString(dto)))
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("login successful!"));
+                .andExpect(content().string("Login successful!"));
 
         verify(authService).loginUser(any(UserLoginDto.class));
     }
 
+    @Test
+    void testLogin_Failure() throws Exception {
+        // Arrange
+        UserLoginDto dto = new UserLoginDto("wrongUser", "badPassword");
+        when(authService.loginUser(any(UserLoginDto.class))).thenReturn(false);
+
+        // Act & Assert
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Invalid username or password!"));
+
+        verify(authService).loginUser(any(UserLoginDto.class));
+    }
 }
