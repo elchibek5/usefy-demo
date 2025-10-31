@@ -23,8 +23,13 @@ public class AuthController {
                                       BindingResult result) {
         // If validation fails(username or password)
         if (result.hasErrors()) {
-            String errorMsg = result.getAllErrors().get(0).getDefaultMessage();
-            return ResponseEntity.badRequest().body(errorMsg);
+            // Return 400 with error messages
+            String errorMessage = result.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .findFirst()
+                    .orElse("Invalid input");
+            return ResponseEntity.badRequest().body(errorMessage);
         }
 
         // Otherwise continue as normal
