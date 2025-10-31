@@ -4,6 +4,7 @@ import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.model.User;
 import com.example.demo.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
