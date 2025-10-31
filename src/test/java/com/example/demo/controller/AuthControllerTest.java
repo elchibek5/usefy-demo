@@ -83,4 +83,30 @@ class AuthControllerTest {
 
         verify(authService).loginUser(any(UserLoginDto.class));
     }
+
+    @Test
+    void testRegister_ValidationError_EmptyUsername() throws Exception {
+        // Arrange : create DTO with empty username
+        UserRegistrationDto dto = new UserRegistrationDto("", "password123");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Username is required"));
+    }
+
+    @Test
+    void testRegister_ValidationError_ShortPassword() throws Exception {
+        // Arrange : create DTO with empty password
+        UserRegistrationDto dto = new UserRegistrationDto("validUser", "123");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password must be at least 6 characters"));
+    }
 }
