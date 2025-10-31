@@ -5,6 +5,7 @@ import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.model.User;
 import com.example.demo.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +18,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody UserRegistrationDto dto) {
-        return ResponseEntity.ok(service.registerUser(dto));
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDto dto,
+                                      BindingResult result) {
+        // If validation fails(username or password)
+        if (result.hasErrors()) {
+            String errorMsg = result.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(errorMsg);
+        }
+
+        // Otherwise continue as normal
+        User savedUser = service.registerUser(dto);
+        return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
