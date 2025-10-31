@@ -99,7 +99,7 @@ class AuthControllerTest {
 
     @Test
     void testRegister_ValidationError_ShortPassword() throws Exception {
-        // Arrange : create DTO with empty password
+        // Arrange : create DTO with short password
         UserRegistrationDto dto = new UserRegistrationDto("validUser", "123");
 
         // Act & Assert
@@ -108,5 +108,18 @@ class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Password must be at least 6 characters"));
+    }
+
+    @Test
+    void testRegister_ValidationError_EmptyPassword() throws Exception {
+        // Arrange : create DTO with empty password
+        UserRegistrationDto dto = new UserRegistrationDto("validUser", "");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password is required"));
     }
 }
