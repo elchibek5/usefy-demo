@@ -19,16 +19,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDto dto,
-                                      BindingResult result) {
-        // If validation fails(username or password)
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDto dto, BindingResult result) {
         if (result.hasErrors()) {
-            // Return 400 with error messages
+            // Prefer @NotBlank messages first
             String errorMessage = result.getAllErrors()
                     .stream()
                     .map(error -> error.getDefaultMessage())
+                    .sorted((a, b) -> a.contains("required") ? -1 : 1)
                     .findFirst()
                     .orElse("Invalid input");
+
             return ResponseEntity.badRequest().body(errorMessage);
         }
 
