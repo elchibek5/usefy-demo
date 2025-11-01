@@ -122,4 +122,5 @@ class AuthControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Password is required"));
     }
+
 }
