@@ -19,20 +19,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDto dto, BindingResult result) {
-        if (result.hasErrors()) {
-            // Prefer @NotBlank messages first
-            String errorMessage = result.getAllErrors()
-                    .stream()
-                    .map(error -> error.getDefaultMessage())
-                    .sorted((a, b) -> a.contains("required") ? -1 : 1)
-                    .findFirst()
-                    .orElse("Invalid input");
-
-            return ResponseEntity.badRequest().body(errorMessage);
-        }
-
-        // Otherwise continue as normal
+    public ResponseEntity<User> register(@Valid @RequestBody UserRegistrationDto dto) {
+        // No manual validation logic needed - handled by GlobalExceptionHandler
         User savedUser = service.registerUser(dto);
         return ResponseEntity.ok(savedUser);
     }
