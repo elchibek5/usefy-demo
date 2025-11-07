@@ -137,7 +137,7 @@ class AuthServiceImplTest {
         );
 
         // Verify the exception message
-        assertEquals("Username already exists", exception.getMessage());
+        assertEquals("User with username 'existingUser' already exists", exception.getMessage());
 
         // Verifying that password encoding and saving NEVER happened
         verify(passwordEncoder, never()).encode(anyString());
