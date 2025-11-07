@@ -87,25 +87,13 @@ class AuthControllerTest {
 
     @Test
     void testRegister_ValidationError_EmptyUsername() throws Exception {
-        // Arrange : create DTO with empty username
         UserRegistrationDto dto = new UserRegistrationDto("", "password123");
 
-        // Act
-        var result = mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andReturn();
-
-        // Assert: check that the response contains either message
-        String response = result.getResponse().getContentAsString();
-        System.out.println("DEBUG RESPONSE (Username): " + response);
-
-        assertTrue(
-                response.contains("Username must be 3–20 characters") ||
-                        response.contains("Username is required"),
-                "Unexpected validation message: " + response
-        );
+                .andExpect(jsonPath("$.username").value("Username is required"));
     }
 
     @Test
@@ -125,22 +113,11 @@ class AuthControllerTest {
     void testRegister_ValidationError_EmptyPassword() throws Exception {
         UserRegistrationDto dto = new UserRegistrationDto("validUser", "");
 
-       // Act
-        var result = mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andReturn();
-
-        // Assert: check that the response contains either message
-        String response = result.getResponse().getContentAsString();
-        System.out.println("DEBUG RESPONSE (Password): " + response);
-
-        assertTrue(
-                response.contains("Password is required") ||
-                        response.contains("Password must be at least 6 characters"),
-                "Unexpected validation message: " + response
-        );
+                .andExpect(jsonPath("$.password").value("Password is required"));
     }
 
 }
