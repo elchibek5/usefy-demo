@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegistrationDto;
+import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User registerUser(UserRegistrationDto dto) {
         if (repo.findByUsername(dto.getUsername()) != null) {
-            throw new RuntimeException("Username already exists");
+            throw new UserAlreadyExistsException(dto.getUsername());
         }
 
         User user = new User();
