@@ -94,7 +94,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Username is required"));
+                .andExpect(jsonPath("$.username").value("Username must be 3–20 characters"));
     }
 
     @Test
@@ -107,7 +107,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Password must be at least 6 characters"));
+                .andExpect(jsonPath("$.password").value("Password must be at least 6 characters"));
     }
 
     @Test
@@ -120,7 +120,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Password is required"));
+                .andExpect(jsonPath("$.password").value("Password is required"));
     }
 
 }
