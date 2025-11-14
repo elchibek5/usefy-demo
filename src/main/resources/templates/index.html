@@ -1,8 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head><meta charset="UTF-8"><title>Demo</title></head>
-    <body>
-        <h1 th:text="${msg}">Placeholder</h1>
-        <p><a href="/hello">Try /hello endpoint</a></p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | Educational Website</title>
+</head>
+<body>
+<h1>Welcome to AiDA </h1>
+<p><a th:href="@{/register}">Go to Registration Page</a></p>
+</body>
 </html>
