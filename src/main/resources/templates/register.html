@@ -2,18 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Registration</title>
+    <title>Register</title>
 </head>
 <body>
+
 <h1>User Registration</h1>
-<form th:action="@{/api/auth/register}" method="post">
+
+<!-- Success Message -->
+<div th:if="${successMessage}">
+    <p style="color: green;" th:text="${successMessage}"></p>
+</div>
+
+<!-- Error message -->
+<div th:if="@{errors">
+    <ul>
+        <li th:each="err : ${errors}" th:text="@{err}"></li>
+    </ul>
+</div>
+
+<form th:action="@/api/auth/register" method="post">
     <label>Username:</label>
-    <input type="text" name="username"/><br/>
-    <label>Password:</label>
-    <input type="password" name="password"/><br/>
+    <input type="text" name="username" />
+
+    <br><br>
+
+    <label>Password</label>
+    <input type="password" name="password" />
+
+    <br><br>
+
     <button type="submit">Register</button>
 </form>
 
-<p><a th:href="@{/}">Back to Home</a></p>
 </body>
 </html>
