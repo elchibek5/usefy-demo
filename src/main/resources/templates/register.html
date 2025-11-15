@@ -20,19 +20,54 @@
     </ul>
 </div>
 
-<form th:action="@/api/auth/register" method="post">
+<form id="registerForm">
     <label>Username:</label>
-    <input type="text" name="username" />
+    <input type="text" name="username" id="username" />
 
     <br><br>
 
     <label>Password</label>
-    <input type="password" name="password" />
+    <input type="password" name="password" id="password" />
 
     <br><br>
 
     <button type="submit">Register</button>
 </form>
 
+<p id="errorMessage" style="color:red;"></p>
+<p id="successMessage" style="color:green;"></p>
+
+<script>
+    const form = document.getElementById("registerForm");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Don't reload page
+
+        const data = {
+            username; document.getElementById("username").value,
+            password; document.getElementById("password").value
+        };
+
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data))
+        });
+
+        const messageEl = document.getElementById("errorMessage");
+        const successEl = document.getElementById("successMessage");
+
+        messageEl.textContent = "";
+        successEl.textContent = "";
+
+        if (response.ok) {
+            const result = await response.json();
+            successEl.textContent = "Registration successful!"
+        } else {
+            const errors = await response.json();
+            messageEl.textContent = JSON.stringify(errors);
+        }
+    });
+</script>
 </body>
 </html>
