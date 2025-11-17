@@ -46,6 +46,7 @@ class AuthControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("testUser"));
@@ -62,6 +63,7 @@ class AuthControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful!"));
@@ -78,6 +80,7 @@ class AuthControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Invalid username or password!"));
@@ -91,6 +94,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.username").value("Username is required"));
@@ -104,6 +108,7 @@ class AuthControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.password").value("Password must be at least 6 characters"));
@@ -115,6 +120,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.password").value("Password is required"));
