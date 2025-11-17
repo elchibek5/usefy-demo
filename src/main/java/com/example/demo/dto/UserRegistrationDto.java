@@ -9,12 +9,10 @@ import lombok.Getter;
 public class UserRegistrationDto {
 
     @NotBlank(message = "Username is required")
-    @Pattern(regexp = ".*\\S.*", message = "Username is required")
     @Size(min = 3, max = 20, message = "Username must be 3–20 characters")
     private String username;
 
     @NotBlank(message = "Password is required")
-    @Pattern(regexp = ".*\\S.*", message = "Password is required")
     @Size(min = 6, max = 100, message = "Password must be at least 6 characters")
     private String password;
 
