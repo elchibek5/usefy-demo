@@ -2,72 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>User Registration</title>
 </head>
 <body>
 
 <h1>User Registration</h1>
 
-<!-- Success Message -->
-<div th:if="${successMessage}">
-    <p style="color: green;" th:text="${successMessage}"></p>
+<!-- Success message -->
+<div th:if="${success}" style="color: green;">
+    <p th:text="${success}"></p>
 </div>
 
-<!-- Error message -->
-<div th:if="@{errors">
-    <ul>
-        <li th:each="err : ${errors}" th:text="@{err}"></li>
-    </ul>
+<!-- Global error (e.g. "username already exists") -->
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
 </div>
 
-<form id="registerForm">
-    <label>Username:</label>
-    <input type="text" name="username" id="username" />
+<form th:action="@{/register}" method="post" th:object="${user}">
+    <div>
+        <label>Username:</label>
+        <input type="text" th:field="*{username}"/>
+        <p th:if="${#fields.hasErrors('username')}"
+           th:errors="*{username}"
+           style="color: red;"></p>
+        <!-- Field-specific error -->
+    </div>
 
-    <br><br>
-
-    <label>Password</label>
-    <input type="password" name="password" id="password" />
-
-    <br><br>
+    <div>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}"/>
+        <!-- Field-specific error -->
+        <p th:if="${#fields.hasErrors('password')}"
+           th:errors="*{password}"
+           style="color: red;"></p>
+    </div>
 
     <button type="submit">Register</button>
 </form>
 
-<p id="errorMessage" style="color:red;"></p>
-<p id="successMessage" style="color:green;"></p>
-
-<script>
-    const form = document.getElementById("registerForm");
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // Don't reload page
-
-        const data = {
-            username; document.getElementById("username").value,
-            password; document.getElementById("password").value
-        };
-
-        const response = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data))
-        });
-
-        const messageEl = document.getElementById("errorMessage");
-        const successEl = document.getElementById("successMessage");
-
-        messageEl.textContent = "";
-        successEl.textContent = "";
-
-        if (response.ok) {
-            const result = await response.json();
-            successEl.textContent = "Registration successful!"
-        } else {
-            const errors = await response.json();
-            messageEl.textContent = JSON.stringify(errors);
-        }
-    });
-</script>
 </body>
 </html>
