@@ -1,23 +1,48 @@
 package com.example.demo.controller;
 
-import org.springframework.ui.Model;
 import com.example.demo.dto.UserRegistrationDto;
+import com.example.demo.exception.UserAlreadyExistsException;
+import com.example.demo.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class FrontendController {
 
-    // Landing Page
-    @GetMapping("/")
-    public String name() {
-        return "index";
+    private final AuthService service;
+
+    public FrontendController(AuthService service) {
+        this.service = service;
     }
 
-    // Registration Page
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    public String showRegisterForm(Model model) {
         model.addAttribute("user", new UserRegistrationDto());
         return "register";
+    }
+
+    @PostMapping("/register")
+    public String processRegistration(
+            @Valid @ModelAttribute("user") UserRegistrationDto dto,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()) {
+            return "register";
+        }
+
+        try {
+            service.registerUser(dto);
+            model.addAttribute("success", "Registration successful!");
+            return "register";
+        } catch (UserAlreadyExistsException e) {
+            model.addAttribute("error", e.getMessage());
+            return "register";
+        }
     }
 }
