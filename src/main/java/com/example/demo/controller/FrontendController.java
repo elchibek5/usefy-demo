@@ -20,6 +20,12 @@ public class FrontendController {
         this.service = service;
     }
 
+    @GetMapping("/")
+    public String showIndex() {
+        // Just render src/main/resources/templates/index.html
+        return "index";
+    }
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new UserRegistrationDto());
