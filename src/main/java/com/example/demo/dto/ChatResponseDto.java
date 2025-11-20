@@ -11,7 +11,7 @@ public class ChatResponseDto {
         this.reply = reply;
     }
 
-    public String getReply(String reply) {
+    public String getReply() {
         return reply;
     }
 

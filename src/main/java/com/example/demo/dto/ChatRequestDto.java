@@ -15,7 +15,7 @@ public class ChatRequestDto {
         return message;
     }
 
-    public void setMessage() {
+    public void setMessage(String message) {
         this.message = message;
     }
 }
