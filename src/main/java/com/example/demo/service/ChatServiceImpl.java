@@ -2,10 +2,18 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ChatRequestDto;
 import com.example.demo.dto.ChatResponseDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+
+    private final String apiKey;
+
+    // inject from application.properties (defaults to empty string if missing)
+    public ChatServiceImpl(@Value("${external.ai.api-key:}") String apiKey) {
+        this.apiKey = apiKey;
+    }
 
     @Override
     public ChatResponseDto getAiReply(ChatRequestDto requestDto) {
