@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import ChatPage from "./pages/ChatPage";
+import { useAuth } from "./context/AuthContext";
 
-function App() {
+const App = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <nav
+        style={{
+          padding: "8px 16px",
+          borderBottom: "1px solid #ddd",
+          marginBottom: 16,
+        }}
+      >
+        <Link to="/chat" style={{ marginRight: 16 }}>
+          Chat
+        </Link>
+        <Link to="/login" style={{ marginRight: 16 }}>
+          Login
+        </Link>
+        {isAuthenticated && (
+          <button onClick={logout} style={{ padding: "4px 8px" }}>
+            Logout
+          </button>
+        )}
+      </nav>
+
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<LoginPage />} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
