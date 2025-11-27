@@ -1,51 +1,38 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import apiClient from "../api/client";
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const location = useLocation();
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
-
-    const messageFromRedirect = location.state?.message;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
         try {
-            const response = await apiClient.post("/api/auth/login", {
+            await apiClient.post("/api/auth/register", {
                 username,
                 password,
             });
 
-            // Adjust this depending on your actual response shape
-            const token = response.data.token;
-            localStorage.setItem("token", token);
-
-            navigate("/chat");
+            setSuccess("Registration successful! You can now log in.");
+            setTimeout(() => navigate("/login"), 1000);
         } catch (err) {
-            setError("Invalid username or password");
+            setError(err.response?.data?.message || "Registration failed");
         }
     };
 
     return (
         <div style={{ maxWidth: "400px", margin: "40px auto" }}>
-            <h2>Login</h2>
+            <h2>Register</h2>
 
-            {messageFromRedirect && (
-                <div style={{ color: "orange", marginBottom: "8px" }}>
-                    {messageFromRedirect}
-                </div>
-            )}
-
-            {error && (
-                <div style={{ color: "red", marginBottom: "8px" }}>
-                    {error}
-                </div>
-            )}
+            {error && <div style={{ color: "red", marginBottom: "8px" }}>{error}</div>}
+            {success && <div style={{ color: "green", marginBottom: "8px" }}>{success}</div>}
 
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: "8px" }}>
@@ -68,14 +55,14 @@ const LoginPage = () => {
                         style={{ width: "100%" }}
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">Register</button>
             </form>
 
             <p style={{ marginTop: "12px" }}>
-                No account? <Link to="/register">Register</Link>
+                Already have an account? <Link to="/login">Login</Link>
             </p>
         </div>
     );
 };
 
-export default LoginPage;
+export default RegisterPage;
