@@ -22,7 +22,7 @@ public class ChatController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ChatResponseDto> chat(@RequestBody ChatRequestDto requestDto) {
-        ChatResponseDto response = chatService.getAiReply(requestDto);
+        ChatResponseDto response = chatService.getChatResponse(requestDto);
         return ResponseEntity.ok(response);
     }
 }
