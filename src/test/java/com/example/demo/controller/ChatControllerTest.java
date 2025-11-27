@@ -37,7 +37,7 @@ class ChatControllerTest {
         ChatRequestDto requestDto = new ChatRequestDto("Hello AI");
         ChatResponseDto responseDto = new ChatResponseDto("Dummy reply");
 
-        when(chatService.getAiReply(any(ChatRequestDto.class))).thenReturn(responseDto);
+        when(chatService.getChatResponse(any(ChatRequestDto.class))).thenReturn(responseDto);
 
         mockMvc.perform(post("/api/chat")
                         .with(csrf())  // add CSRF token
