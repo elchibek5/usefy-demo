@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChatServiceImpl implements ChatService {
+public class ChatServiceImpl extends ChatService {
 
     private final String apiKey;
 
@@ -16,7 +16,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ChatResponseDto getAiReply(ChatRequestDto requestDto) {
+    public ChatResponseDto getChatResponse(ChatRequestDto requestDto) {
         String userMessage = requestDto.getMessage();
 
         String reply;
