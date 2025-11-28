@@ -6,13 +6,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChatServiceImpl extends ChatService {
+public class ChatServiceImpl implements ChatService {
 
     private final String apiKey;
 
     // inject from application.properties (defaults to empty string if missing)
     public ChatServiceImpl(@Value("${external.ai.api-key:}") String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    // Optional no-arg constructor if you ever want to use it in plain unit tests
+    public ChatServiceImpl() {
+        this("");
     }
 
     @Override
