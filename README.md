@@ -93,6 +93,8 @@ graph TD
 
 -----
 
-\<div align="center"\>
-\<p\>Created by \<a href="https://linkedin.com/in/elchibekdastanov"\>Elchibek Dastanov\</a\>\</p\>
-\</div\>
+<div align="center">
+  <p>
+    Created by <a href="https://www.linkedin.com/in/elchibek-dastanov-55bb84308/">Elchibek Dastanov</a>
+  </p>
+</div>
