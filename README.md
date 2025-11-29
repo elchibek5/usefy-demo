@@ -30,22 +30,22 @@ AiDA follows a **Domain-Driven Design (DDD)** approach with a clear separation o
 
 ```mermaid
 graph TD
-    User((User)) -->|HTTPS / JSON| API_Gateway[API Gateway / Controller]
+    User((User)) -->|HTTPS / JSON| API_Gateway["API Gateway / Controller"]
     
     subgraph "Core Backend (Spring Boot)"
-        API_Gateway -->|Validate Token| Security[Security Config (Stateless)]
-        Security -->|Authorized| Service[Learning Service]
-        Service -->|Read/Write| Repository[JPA Repository]
+        API_Gateway -->|Validate Token| Security["Security Config (Stateless)"]
+        Security -->|Authorized| Service["Learning Service"]
+        Service -->|Read/Write| Repository["JPA Repository"]
     end
     
     subgraph "Data Persistence"
-        Repository <-->|JDBC| DB[(PostgreSQL)]
-        DB <-->|Cache| Redis[(Redis Cache)]
+        Repository <-->|JDBC| DB[("PostgreSQL")]
+        DB <-->|Cache| Redis[("Redis Cache")]
     end
     
     subgraph "AI Integration"
-        Service -->|Prompt Engineering| AI_Client[OpenAI Service]
-        AI_Client <-->|REST| GPT[OpenAI API]
+        Service -->|Prompt Engineering| AI_Client["OpenAI Service"]
+        AI_Client <-->|REST| GPT["OpenAI API"]
     end
 ````
 
