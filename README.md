@@ -83,6 +83,12 @@ graph TD
 
 -----
 
+### Chat Feature
+- Secure AI chat available only to authenticated users
+- Protected by Spring Security
+- Fully tested (backend + frontend)
+
+
 ## 🚀 Roadmap
 
   - [x] Initial Project Setup & Docker Configuration
