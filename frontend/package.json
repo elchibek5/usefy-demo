@@ -10,8 +10,8 @@
     "axios": "^1.13.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^7.10.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -37,5 +37,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2"
   }
 }
