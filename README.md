@@ -1,129 +1,72 @@
-AI-Powered Learning Platform
+# AI-Powered Learning Platform
 
-A full-stack educational platform that combines structured course content with an AI tutoring assistant. The system supports user authentication, persistent chat history, course-based learning, and section-aware AI assistance, built with a production-ready backend and modern frontend architecture.
+**Full-stack LMS with context-aware AI tutoring and persistent RAG-lite capabilities.**
 
-🚀 Features
-🔐 Authentication & Security
+## 🏗 System Architecture
 
-User registration and login with BCrypt password hashing
+* **Backend:** Java 17 / Spring Boot (REST API)
+* **Frontend:** React (SPA)
+* **Database:** PostgreSQL (Relational persistence)
+* **Security:** Spring Security + BCrypt (Stateful/Session-based)
+* **AI Integration:** Section-contextual prompt engineering via external LLM API
 
-Secure, role-aware API endpoints using Spring Security
+---
 
-Protected frontend routes for authenticated users
+## 🛠 Technical Implementation
 
-Centralized exception handling with consistent error responses
+### 🔐 Security & Auth
 
-🧠 AI Tutoring System
+* **Authentication:** Custom `UserDetailsService` implementation with BCrypt password encoding.
+* **Authorization:** Role-based access control (RBAC) protecting course management and AI endpoints.
+* **Global Exception Handling:** `@ControllerAdvice` mapping domain exceptions to standard HTTP status codes.
 
-Secure backend AI chat API with protected access
+### 🧠 Context-Aware AI Logic
 
-Section-aware AI assistant that answers questions based on course content
+* **The "Section-Aware" Engine:** The backend fetches the current `Section` content (Markdown) and injects it into the LLM system prompt, ensuring responses are grounded in the specific lecture data.
+* **Persistence:** Chat sessions are mapped to `(User, Section)` pairs in PostgreSQL, allowing for historical retrieval and multi-session management.
 
-Each course section maintains its own persistent chat session
+### 💾 Data Modeling
 
-Ability to clear or restart AI conversations per section
+* **Hierarchical Content:** `Course 1 -> N Sections`.
+* **Chat Schema:** `ChatSession` holds metadata; `ChatMessage` holds the content and role (User/Assistant) with timestamps for chronological rendering.
+* **Migrations:** Transitioned from H2 (volatile) to PostgreSQL (persistent) for production readiness.
 
-💬 Chat & Persistence
+---
 
-Persistent chat sessions stored in PostgreSQL
+## 🔌 API Overview
 
-Support for multiple chat sessions per user
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/api/auth/**` | POST | Login/Registration (Public) |
+| `/api/courses` | GET | List all available modules |
+| `/api/sections/{id}` | GET | Retrieve Markdown content for a section |
+| `/api/ai/chat` | POST | Send message + Contextual metadata |
+| `/api/ai/history/{sectionId}` | GET | Fetch persistent chat history |
 
-Full conversation history retrieval
+---
 
-Clean domain modeling for chat sessions and messages
+## 🚀 Deployment & CI/CD
 
-📚 Course & Content Management
+* **Pipeline:** GitHub Actions automates `mvn clean verify` and frontend builds on every push.
+* **Environment:** Production-ready configuration using Spring Profiles (`application-prod.yml`).
+* **Logging:** SLF4J/Logback integration with severity filtering.
 
-Course and Section domain models with proper relationships
+---
 
-Markdown-based lecture content (no videos, text-first learning)
+## 🛠 Setup
 
-REST APIs to retrieve courses and their sections
+```bash
+# Backend
+./mvnw spring-boot:run -Dspring.profiles.active=dev
 
-Scalable data model designed for future expansion
+# Frontend
+npm install && npm start
 
-🖥️ Frontend Experience
+```
 
-React-based frontend with protected routing
+---
 
-Course viewer with rendered Markdown lecture notes
+## 📈 Future Scope
 
-Integrated AI assistant UI similar to IDE copilots
-
-Dynamic chat UI with real-time message rendering
-
-🧪 Testing & Quality
-
-Unit tests for services, controllers, and repositories
-
-Security-aware controller testing
-
-CI pipeline running builds and tests automatically
-
-Validation on both frontend and backend
-
-📦 Infrastructure & Deployment
-
-Migration from H2 to PostgreSQL
-
-Environment-based configuration and secret management
-
-First production deployment on cloud infrastructure
-
-Backend logging with multiple severity levels (DEBUG → CRITICAL)
-
-🛠 Tech Stack
-
-Backend
-
-Java 17
-
-Spring Boot
-
-Spring Security
-
-Spring Data JPA
-
-PostgreSQL
-
-Hibernate
-
-JUnit 5, Mockito
-
-Frontend
-
-React
-
-JavaScript
-
-Markdown rendering
-
-Protected routing
-
-DevOps & Tooling
-
-Git & GitHub
-
-GitHub Actions (CI)
-
-Cloud deployment (Google Cloud / AWS)
-
-Logging & monitoring
-
-📐 Architecture Highlights
-
-Layered architecture (Controller → Service → Repository)
-
-DTO-based API design
-
-Clean separation of concerns
-
-Secure API key handling
-
-Scalable relational data model
-
-📌 Status
-
-Core functionality complete.
-The system is production-ready and designed for further expansion (analytics, course authoring, advanced AI features).
+* **Vector Search:** Moving from simple context injection to RAG using a Vector DB.
+* **Analytics:** Tracking student engagement via AI query patterns.
