@@ -1,106 +1,129 @@
-<div align="center">
-  <h1>🎓 AiDA Learn</h1>
-  <h3>
-    <span style="color: #FF4B4B;">The LMS that adapts to you.</span>
-  </h3>
-  <p>
-    AiDA (Artificial Intelligence Digital Assistant) is an enterprise-grade Learning Management System being built to use <strong>Generative AI</strong> for real-time personalized tutoring.
-  </p>
+AI-Powered Learning Platform
 
-  <a href="https://github.com/elchibek5/AiDA-Learn">
-    <img src="https://img.shields.io/badge/Status-Under_Development-yellow?style=for-the-badge" alt="Status" />
-  </a>
+A full-stack educational platform that combines structured course content with an AI tutoring assistant. The system supports user authentication, persistent chat history, course-based learning, and section-aware AI assistance, built with a production-ready backend and modern frontend architecture.
 
-  <br>
-  <br>
+🚀 Features
+🔐 Authentication & Security
 
-  ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
-  ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2-green?logo=spring)
-  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Enterprise-blue?logo=postgresql)
-  ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
-  ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-412991?logo=openai&logoColor=white)
+User registration and login with BCrypt password hashing
 
-</div>
+Secure, role-aware API endpoints using Spring Security
 
----
+Protected frontend routes for authenticated users
 
-## 🏗️ System Architecture
+Centralized exception handling with consistent error responses
 
-AiDA follows a **Domain-Driven Design (DDD)** approach with a clear separation of concerns.
+🧠 AI Tutoring System
 
-```mermaid
-graph TD
-    User((User)) -->|HTTPS / JSON| API_Gateway["API Gateway / Controller"]
-    
-    subgraph "Core Backend (Spring Boot)"
-        API_Gateway -->|Validate Token| Security["Security Config (Stateless)"]
-        Security -->|Authorized| Service["Learning Service"]
-        Service -->|Read/Write| Repository["JPA Repository"]
-    end
-    
-    subgraph "Data Persistence"
-        Repository <-->|JDBC| DB[("PostgreSQL")]
-        DB <-->|Cache| Redis[("Redis Cache")]
-    end
-    
-    subgraph "AI Integration"
-        Service -->|Prompt Engineering| AI_Client["OpenAI Service"]
-        AI_Client <-->|REST| GPT["OpenAI API"]
-    end
-````
+Secure backend AI chat API with protected access
 
------
+Section-aware AI assistant that answers questions based on course content
 
-## 🛠️ Tech Stack
+Each course section maintains its own persistent chat session
 
-| Component | Technology | Description |
-| :--- | :--- | :--- |
-| **Language** | **Java 21** | Utilizing Records, Pattern Matching, and Virtual Threads. |
-| **Framework** | Spring Boot 3.2 | Rapid backend development with Dependency Injection. |
-| **Database** | PostgreSQL | Relational data integrity for user and course management. |
-| **Security** | Spring Security 6 | OAuth2 Resource Server & JWT Authentication. |
-| **AI Engine** | OpenAI GPT-4 | Dynamic quiz generation and context-aware tutoring. |
-| **Container** | Docker | Consistent deployment across environments. |
+Ability to clear or restart AI conversations per section
 
------
+💬 Chat & Persistence
 
-## 💡 Key Features (In Progress)
+Persistent chat sessions stored in PostgreSQL
 
-### 🔐 Secure Authentication
+Support for multiple chat sessions per user
 
-  * Implementation of **JWT (JSON Web Tokens)** for stateless session management.
-  * Role-Based Access Control (RBAC) distinguishing between `STUDENT`, `INSTRUCTOR`, and `ADMIN`.
+Full conversation history retrieval
 
-### 🤖 Generative AI Tutor
+Clean domain modeling for chat sessions and messages
 
-  * **Dynamic Quiz Generation:** System analyzes course text and generates 5 unique questions on-the-fly.
-  * **Explanation Engine:** Uses RAG (Retrieval-Augmented Generation) to explain incorrect answers to students.
+📚 Course & Content Management
 
-### ⚡ High Performance
+Course and Section domain models with proper relationships
 
-  * Leveraging **Java 21 Virtual Threads** for high-throughput concurrency handling.
-  * Optimized SQL queries using Hibernate/JPA projections.
+Markdown-based lecture content (no videos, text-first learning)
 
------
+REST APIs to retrieve courses and their sections
 
-### Chat Feature
-- Secure AI chat available only to authenticated users
-- Protected by Spring Security
-- Fully tested (backend + frontend)
+Scalable data model designed for future expansion
 
+🖥️ Frontend Experience
 
-## 🚀 Roadmap
+React-based frontend with protected routing
 
-  - [x] Initial Project Setup & Docker Configuration
-  - [x] Database Schema Design (PostgreSQL)
-  - [ ] Implement Spring Security Filter Chain
-  - [ ] Connect OpenAI API Client
-  - [ ] Build Frontend Dashboard (React)
+Course viewer with rendered Markdown lecture notes
 
------
+Integrated AI assistant UI similar to IDE copilots
 
-<div align="center">
-  <p>
-    Created by <a href="https://www.linkedin.com/in/elchibek-dastanov-55bb84308/">Elchibek Dastanov</a>
-  </p>
-</div>
+Dynamic chat UI with real-time message rendering
+
+🧪 Testing & Quality
+
+Unit tests for services, controllers, and repositories
+
+Security-aware controller testing
+
+CI pipeline running builds and tests automatically
+
+Validation on both frontend and backend
+
+📦 Infrastructure & Deployment
+
+Migration from H2 to PostgreSQL
+
+Environment-based configuration and secret management
+
+First production deployment on cloud infrastructure
+
+Backend logging with multiple severity levels (DEBUG → CRITICAL)
+
+🛠 Tech Stack
+
+Backend
+
+Java 17
+
+Spring Boot
+
+Spring Security
+
+Spring Data JPA
+
+PostgreSQL
+
+Hibernate
+
+JUnit 5, Mockito
+
+Frontend
+
+React
+
+JavaScript
+
+Markdown rendering
+
+Protected routing
+
+DevOps & Tooling
+
+Git & GitHub
+
+GitHub Actions (CI)
+
+Cloud deployment (Google Cloud / AWS)
+
+Logging & monitoring
+
+📐 Architecture Highlights
+
+Layered architecture (Controller → Service → Repository)
+
+DTO-based API design
+
+Clean separation of concerns
+
+Secure API key handling
+
+Scalable relational data model
+
+📌 Status
+
+Core functionality complete.
+The system is production-ready and designed for further expansion (analytics, course authoring, advanced AI features).
